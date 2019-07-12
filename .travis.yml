@@ -17,11 +17,25 @@ after_success:
  - docker build -t sumitrusia/multi-nginx ./nginx
  - docker build -t sumitrusia/multi-server ./server
  - docker build -t sumitrusia/multi-worker ./worker
-#login to the docker CLI (logging to docker hub in one single command)
+ #login to the docker CLI (logging to docker hub in one single command)
  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
  #take those images & push them to docker hub
  - docker push sumitrusia/multi-client
  - docker push sumitrusia/multi-nginx
  - docker push sumitrusia/multi-server
  - docker push sumitrusia/multi-worker
+ 
+deploy:
+ provider: elasticbeanstalk
+ region: ap-south-1
+ app: multi-docker
+ env: MultiDocker-env
+ bucket_name: elasticbeanstalk-ap-south-1-058045224827
+ bucket_path: docker-multi
+ on:
+  branch: master
+ access_key_id:
+  secure: $AWS_ACCESS_KEY
+ secret_access_key:
+  secure: $AWS_SECRET_KEY
  
