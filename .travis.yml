@@ -18,7 +18,7 @@ after_success:
  - docker build -t sumitrusia/multi-server ./server
  - docker build -t sumitrusia/multi-worker ./worker
 #login to the docker CLI (logging to docker hub in one single command)
- - echo #$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+ - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
  #take those images & push them to docker hub
  - docker push sumitrusia/multi-client
  - docker push sumitrusia/multi-nginx
