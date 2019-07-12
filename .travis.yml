@@ -1,0 +1,27 @@
+language: generic
+sudo: required
+
+services:
+ - docker
+
+before_install:
+ - docker build -t sumitrusia/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+# - docker run sumitrusia/react-test npm run test -- --coverage
+ - docker run -e CI=true sumitrusia/react-test npm run test
+
+# building prod docker images 
+after_success:
+ - docker build -t sumitrusia/multi-client ./client
+ - docker build -t sumitrusia/multi-nginx ./nginx
+ - docker build -t sumitrusia/multi-server ./server
+ - docker build -t sumitrusia/multi-worker ./worker
+#login to the docker CLI (logging to docker hub in one single command)
+ - echo #$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+ #take those images & push them to docker hub
+ - docker push sumitrusia/multi-client
+ - docker push sumitrusia/multi-nginx
+ - docker push sumitrusia/multi-server
+ - docker push sumitrusia/multi-worker
+ 
