@@ -1,0 +1,36 @@
+{
+	"AWSEBDockerrunVersion": 2,
+	"containerDefinitions": [
+		{
+			"name": "client",
+			"image": "sumitrusia/multi-client",
+			"hostname": "client",
+			"essential": false
+		},
+		{
+			"name": "server",
+			"image": "sumitrusia/multi-server",
+			"hostname": "api",
+			"essential": false
+		},
+		{
+			"name": "worker",
+			"image": "sumitrusia/multi-worker",
+			"hostname": "worker",
+			"essential": false
+		},
+		{
+			"name": "nginx",
+			"image": "sumitrusia/multi-nginx",
+			"hostname": "nginx",
+			"essential": true,
+			"portMappings": [
+				{
+					"hostport": 80,
+					"containerPort": 80
+				}
+			],
+			"links": ["client", "server"]
+		}
+	]
+}
